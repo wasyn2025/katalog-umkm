@@ -135,7 +135,7 @@ export async function tambahProduk(prevStateOrFormData, maybeFormData) {
   });
 
   if (error) {
-    return { error: error.message || "Gagal menyimpan produk baru." };
+    return { error: error.message || "Gagal menambahkan produk baru." };
   }
 
   revalidatePath("/admin");
@@ -198,3 +198,30 @@ export async function ubahProduk(prevStateOrFormData, maybeFormData) {
   revalidatePath(`/produk/${id}`);
   redirect("/admin");
 }
+
+export async function hapusProduk(formData) {
+  const id = formData instanceof FormData ? formData.get("id") : formData;
+
+  if (!id) {
+    return { error: "ID produk tidak valid." };
+  }
+
+  const supabase = await buatKoneksiAdmin();
+  const user = await periksaLoginAdmin(supabase);
+
+  if (!user) {
+    return { error: "Aksi ditolak: Anda harus login sebagai admin." };
+  }
+
+  const { error } = await supabase.from("produk").delete().eq("id", id);
+
+  if (error) {
+    return { error: error.message || "Gagal menghapus produk." };
+  }
+
+  revalidatePath("/admin");
+  revalidatePath("/");
+  revalidatePath(`/produk/${id}`);
+}
+
+

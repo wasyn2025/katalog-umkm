@@ -269,5 +269,105 @@ Baca AGENTS.md, dan docs/user-stories.md bagian US-09.
 Buatkan fitur ubah produk di halaman admin dengan mengikuti skema database di skema-database.md dan mengikuti kriteria yang ada di docs/user-stories.md bagian US-09
 
 **Hasil:**
+Pekerjaan untuk **US-09 (Ubah produk di admin)** telah selesai.
+
+File yang diubah:
+1. [`app/admin/actions.js`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/actions.js)
+   - Menambahkan Server Action `ubahProduk`:
+     - Memeriksa login admin di sisi server (`periksaLoginAdmin`); aksi ditolak jika belum login.
+     - Memvalidasi input (`id`, `nama`, `harga`).
+     - Menyimpan pembaruan data ke tabel `produk` di Supabase (`nama`, `harga`, `kategori`, `foto_url`, `deskripsi`).
+     - Melakukan `revalidatePath` untuk memperbarui cache halaman `/admin`, `/`, dan detail produk, lalu mengalihkan ke `/admin`.
+2. [`components/FormProduk.jsx`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/components/FormProduk.jsx)
+   - Menambahkan dukungan Server Action (`useActionState`) dengan indikator loading (`Menyimpan...`) dan penanganan error.
+   - Menyertakan input tersembunyi `id` ketika mengedit produk yang sudah ada (`<input type="hidden" name="id" value={produk.id} />`).
+3. [`app/admin/produk/[id]/ubah/page.jsx`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/produk/[id]/ubah/page.jsx)
+   - Mengambil data produk berdasarkan parameter `id` langsung dari database Supabase di sisi server.
+   - Memanggil `notFound()` jika produk tidak ditemukan.
+   - Mengisi awal (pre-fill) form dengan data produk lama.
+   - Menghubungkan form ke Server Action `ubahProduk`.
+   - Menghapus komponen [`CatatanBelumAktif`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/components/CatatanBelumAktif.jsx).
+
+---
+
+### Cara mengetes:
+1. Buka `http://localhost:3000/admin/login` dan masuk sebagai admin.
+2. Di halaman `/admin`, klik tombol **"Ubah"** pada salah satu produk di tabel.
+3. Form ubah produk di `/admin/produk/[id]/ubah` akan terbuka dengan seluruh kolom (nama, harga, kategori, link foto, deskripsi) sudah terisi dengan data lama dari database.
+4. Ubah salah satu data (misalnya nama atau harga), lalu klik **"Simpan perubahan"**.
+5. Halaman akan otomatis dialihkan kembali ke `/admin`, dan data produk yang baru saja diubah langsung terbarui di tabel maupun di katalog beranda (`/`).
+
+**Perbaikan:**
+Analyzed page.jsx:L1-14
+Analyzed actions.js:L1-154
+Edited actions.js
+Ran test /admin/produk/baru route compilation
+Ran test /admin/produk/1/ubah route compilation
+
+Analisis Masalah
+Error:
+```
+Export tambahProduk doesn't exist in target module
+The export tambahProduk was not found in module [project]/app/admin/actions.js
+```
+**Penyebab:**
+Halaman [`app/admin/produk/baru/page.jsx`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/produk/baru/page.jsx) mengimpor `tambahProduk` dari `@/app/admin/actions`:
+```javascript
+import { tambahProduk } from "@/app/admin/actions";
+```
+Namun, di dalam [`app/admin/actions.js`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/actions.js), fungsi Server Action `tambahProduk` belum didefinisikan dan diekspor (sebelumnya baru ada `masukAdmin`, `keluarAdmin`, `gantiPassword`, dan `ubahProduk`).
+
+---
+
+Perbaikan
+1. Menambahkan Server Action [`tambahProduk`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/actions.js#L99-L141) di [`app/admin/actions.js`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/actions.js):
+   - Memeriksa login admin di sisi server (`periksaLoginAdmin`); jika belum login, aksi ditolak.
+   - Memvalidasi data input (`nama` dan `harga` wajib, harga angka positif).
+   - Menyimpan produk baru ke tabel `produk` di Supabase (`insert`).
+   - Melakukan `revalidatePath("/admin")` dan `revalidatePath("/")`.
+   - Mengalihkan kembali ke `/admin` setelah berhasil disimpan.
+2. Error import pada [`app/admin/produk/baru/page.jsx`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/produk/baru/page.jsx) kini telah teratasi sepenuhnya.
+
+
+## US-10 Hapus Produk
+
+**Prompt:**
+Baca AGENTS.md, dan docs/user-stories.md bagian US-10.
+
+Buatkan fitur hapus produk di halaman admin dengan mengikuti skema database di skema-database.md dan mengikuti kriteria yang ada di docs/user-stories.md bagian US-10
+
+**Hasil:**
+Pekerjaan untuk **US-10 (Hapus produk di admin)** telah selesai.
+
+File yang diubah:
+1. [`app/admin/actions.js`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/actions.js)
+   - Menambahkan Server Action `hapusProduk`:
+     - Memeriksa login admin di sisi server (`periksaLoginAdmin`); aksi ditolak jika tidak ada sesi login admin.
+     - Menghapus produk dari tabel `produk` di Supabase berdasarkan `id`.
+     - Melakukan `revalidatePath("/admin")`, `revalidatePath("/")`, dan `revalidatePath("/produk/[id]")` agar daftar produk langsung terbarui.
+2. [`components/TabelProduk.jsx`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/components/TabelProduk.jsx)
+   - Membungkus tombol **"Hapus"** ke dalam `<form action={hapusProduk}>` dengan input tersembunyi `id` produk.
+   - Menambahkan dialog konfirmasi browser (`window.confirm("Yakin ingin menghapus [nama produk]?")`). Jika pengguna membatalkan konfirmasi (`Cancel`), pengiriman form dibatalkan.
+   - Menjaga tampilan tombol dan layout tabel tetap rapi sesuai desain semula.
+
+---
+
+Cara mengetes:
+1. Masuk ke halaman admin di `http://localhost:3000/admin/login`.
+2. Pada tabel produk di `http://localhost:3000/admin`, klik tombol **"Hapus"** pada salah satu baris produk.
+3. Muncul dialog konfirmasi browser: *"Yakin ingin menghapus [Nama Produk]?"*.
+4. **Uji Batal**: Klik **Cancel / Batal** -> Produk tidak terhapus dan tetap ada di tabel.
+5. **Uji Hapus**: Klik **OK** -> Produk terhapus dari database Supabase dan baris produk tersebut langsung hilang dari tabel admin maupun katalog beranda.
+
+
+**Perbaikan:**
+
+### US-11 Filter kategori atau pencarian
+**Prompt:**
+Baca AGENTS.md, dan docs/user-stories.md bagian US-11.
+
+Buatkan fitur filter kategori atau pencarian di halaman admin dengan mengikuti skema database di skema-database.md dan mengikuti kriteria yang ada di docs/user-stories.md bagian US-11
+
+**Hasil:**
 
 **Perbaikan:**
