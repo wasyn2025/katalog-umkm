@@ -3,6 +3,20 @@
 import { redirect } from "next/navigation";
 import { buatKoneksiAdmin } from "@/lib/supabase/admin";
 
+export async function periksaLoginAdmin(supabase) {
+  const client = supabase || (await buatKoneksiAdmin());
+  const {
+    data: { user },
+    error,
+  } = await client.auth.getUser();
+
+  if (error || !user) {
+    return null;
+  }
+
+  return user;
+}
+
 export async function masukAdmin(prevStateOrFormData, maybeFormData) {
   const formData =
     maybeFormData instanceof FormData
@@ -64,12 +78,9 @@ export async function gantiPassword(prevStateOrFormData, maybeFormData) {
   }
 
   const supabase = await buatKoneksiAdmin();
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
+  const user = await periksaLoginAdmin(supabase);
 
-  if (userError || !user) {
+  if (!user) {
     return { error: "Sesi tidak valid atau Anda belum masuk. Silakan login kembali." };
   }
 

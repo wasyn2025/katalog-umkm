@@ -158,8 +158,29 @@ Cara mengetes:
 ## US-06 Proteksi halaman admin
 
 **Prompt:**
+Baca AGENTS.md aturan keamanan nomor 3 dan 4, dan docs/user-stories.md bagian US-06.
+
+Buat file proxy.js di root proyek (Next.js 16). Semua rute /admin kecuali /admin/login wajib login dengan Supabase Auth; kalau belum login, alihkan ke /admin/login. Pastikan juga setiap Server Action yang mengubah data memeriksa login di server. Hapus CatatanBelumAktif dari halaman /admin.
 
 **Hasil:**
+Pekerjaan untuk **US-06 (Proteksi halaman admin)** telah selesai.
+
+File yang dibuat & diubah:
+1. [`proxy.js`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/proxy.js) — Dibuat di root proyek untuk memproteksi seluruh rute `/admin` (kecuali `/admin/login`) menggunakan Supabase Auth melalui `@supabase/ssr`. Jika sesi admin tidak valid atau belum login, permintaan akan dialihkan (redirect) ke `/admin/login`.
+2. [`app/admin/actions.js`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/actions.js) — Menambahkan helper `periksaLoginAdmin` dan memastikan setiap Server Action yang mengubah data (seperti `gantiPassword`) memeriksa login pengguna di sisi server sebelum mengeksekusi perubahan.
+3. [`app/admin/page.jsx`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/page.jsx) — Menghapus komponen [`CatatanBelumAktif`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/components/CatatanBelumAktif.jsx).
+
+---
+
+Cara mengetes:
+1. Buka jendela penyamaran (Incognito / Private Window) di mana admin belum login.
+2. Coba akses rute admin mana pun, misalnya:
+   - `http://localhost:3000/admin`
+   - `http://localhost:3000/admin/password`
+   - `http://localhost:3000/admin/produk/baru`
+3. Periksa browser: semua halaman tersebut akan langsung dialihkan ke `http://localhost:3000/admin/login`.
+4. Masuk dengan akun admin di `/admin/login`. Setelah login berhasil, halaman `/admin` dan sub-rutenya dapat diakses seperti biasa.
+5. Catatan kuning `CatatanBelumAktif` tentang proteksi halaman admin sudah tidak muncul lagi di `/admin`.
 
 **Perbaikan:**
 
