@@ -98,16 +98,62 @@ Baca AGENTS.md bagian aturan keamanan dan docs/user-stories.md bagian US-04.
 Buat login admin memakai Supabase Auth (email dan password) dengan @supabase/ssr dan cookie, memakai SUPABASE_URL dan SUPABASE_PUBLISHABLE_KEY. Login diproses dengan Server Action di app/admin/actions.js dan disambungkan ke form di app/admin/login/page.jsx. Login berhasil diarahkan ke /admin; login gagal menampilkan pesan error yang jelas di halaman login. Buat juga tombol "Keluar" di components/NavAdmin.jsx berfungsi: mengakhiri sesi lalu kembali ke /admin/login. Jangan ubah tampilan. Hapus CatatanBelumAktif dari halaman login.
 
 **Hasil:**
+Pekerjaan untuk **US-04 (Login admin)** telah selesai.
+
+File yang dibuat & diubah:
+1. [`lib/supabase/admin.js`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/lib/supabase/admin.js) — Membuat helper `buatKoneksiAdmin()` menggunakan `createServerClient` dari `@supabase/ssr` dengan `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, serta cookie Next.js (`next/headers`).
+2. [`lib/supabase/index.js`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/lib/supabase/index.js) & [`lib/supabase/server.js`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/lib/supabase/server.js) — Re-export `buatKoneksiAdmin`.
+3. [`app/admin/actions.js`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/actions.js) — Membuat Server Action:
+   - `masukAdmin`: memproses email & password dengan `supabase.auth.signInWithPassword`, mengarahkan ke `/admin` jika berhasil, atau mengembalikan pesan error jika gagal.
+   - `keluarAdmin`: mengakhiri sesi dengan `supabase.auth.signOut` lalu mengarahkan ke `/admin/login`.
+4. [`app/admin/login/page.jsx`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/login/page.jsx) — Menghubungkan form login ke Server Action `masukAdmin` menggunakan `useActionState`, menampilkan pesan error bila login gagal, serta menghapus [`CatatanBelumAktif`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/components/CatatanBelumAktif.jsx).
+5. [`components/NavAdmin.jsx`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/components/NavAdmin.jsx) — Memfungsikan tombol "Keluar" menggunakan form Server Action `keluarAdmin` tanpa mengubah tampilan.
+
+---
+
+Cara mengetes:
+1. Buka halaman login admin di `http://localhost:3000/admin/login`.
+2. **Uji login gagal**: Masukkan email atau password yang salah, lalu klik **Masuk**. Pesan error (*"Email atau password salah. Silakan periksa kembali."*) akan tampil di halaman.
+3. **Uji login berhasil**: Masukkan email dan password admin toko yang terdaftar di Supabase Auth, lalu klik **Masuk**. Halaman akan dialihkan ke `/admin`.
+4. **Uji tombol Keluar**: Di halaman admin (`/admin`), klik tombol **Keluar** di pojok kanan atas menu admin. Sesi akan diakhiri dan halaman akan kembali dialihkan ke `/admin/login`.
 
 **Perbaikan:**
 
 ## US-05 Ganti password
 
 **Prompt:**
+Baca docs/user-stories.md bagian US-05.
+
+Buat Server Action ganti password di app/admin/actions.js untuk admin yang sedang login, memakai Supabase Auth. Validasi di server: password baru minimal 8 karakter dan harus sama dengan konfirmasi. Tampilkan pesan berhasil atau pesan error yang jelas di halaman. Sambungkan ke form di app/admin/password/page.jsx tanpa mengubah tampilannya. Hapus CatatanBelumAktif dari halaman ini.
 
 **Hasil:**
+Pekerjaan untuk **US-05 (Ganti password)** telah selesai.
+
+File yang diubah:
+1. [`app/admin/actions.js`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/actions.js)
+   - Menambahkan Server Action `gantiPassword`:
+     - Memvalidasi input di server: kedua kolom wajib diisi, password baru minimal 8 karakter, dan password baru harus cocok dengan konfirmasi password.
+     - Memverifikasi di server bahwa pengguna sedang login melalui `supabase.auth.getUser()`.
+     - Memperbarui password menggunakan `supabase.auth.updateUser({ password })`.
+     - Mengembalikan `{ success: "Password berhasil diganti." }` jika berhasil, atau pesan error jika gagal / validasi tidak terpenuhi.
+2. [`app/admin/password/page.jsx`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/password/page.jsx)
+   - Menghubungkan form ke Server Action `gantiPassword` menggunakan `useActionState`.
+   - Menampilkan alert pesan berhasil atau pesan error yang jelas di atas form.
+   - Mempertahankan tampilan dan tata letak asli.
+   - Menghapus komponen [`CatatanBelumAktif`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/components/CatatanBelumAktif.jsx).
+
+---
+
+Cara mengetes:
+1. Masuk terlebih dahulu melalui `/admin/login` dengan akun admin yang valid.
+2. Buka halaman ganti password di `http://localhost:3000/admin/password`.
+3. **Uji validasi tidak cocok**: Masukkan password baru dan konfirmasi yang berbeda. Klik **Simpan password** -> Muncul pesan error (*"Password baru dan konfirmasi password tidak sama."*).
+4. **Uji validasi kurang dari 8 karakter**: Masukkan password kurang dari 8 karakter -> Muncul pesan error (*"Password baru minimal 8 karakter."*).
+5. **Uji berhasil**: Masukkan password baru minimal 8 karakter yang sama di kedua kolom -> Muncul pesan sukses (*"Password berhasil diganti."*).
+6. Uji login kembali di `/admin/login` menggunakan password baru tersebut untuk memastikan perubahan telah tersimpan di Supabase Auth.
 
 **Perbaikan:**
+-
 
 ## US-06 Proteksi halaman admin
 

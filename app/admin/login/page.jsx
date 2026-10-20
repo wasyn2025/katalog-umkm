@@ -23,13 +23,16 @@ export default function HalamanLogin() {
 
       <form action={formAction} className="flex flex-col gap-4">
         <Input label="Email" name="email" type="email" autoComplete="email" required />
-        <Input
-          label="Password"
-          name="password"
-          type="password"
-          autoComplete="current-password"
-          required
-        />
+        <div>
+          <Input
+            label="Password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            required
+          />
+          <a href="/admin/password" className="text-sm text-utama-gelap font-medium underline">Lupa Password?</a>
+        </div>
         <Tombol type="submit" disabled={isPending}>
           {isPending ? "Memproses..." : "Masuk"}
         </Tombol>
