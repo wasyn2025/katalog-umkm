@@ -14,14 +14,14 @@ Tampilkan produk dengan komponen KartuProduk yang sudah ada, tanpa mengubah tamp
 **Hasil:**
 Pekerjaan untuk **US-01 (Katalog dari database)** telah selesai.
 
-### File yang dibuat & diubah:
+File yang dibuat & diubah:
 1. [`lib/supabase/server.js`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/lib/supabase/server.js) — Membuat fungsi `buatKoneksiServer` menggunakan `@supabase/supabase-js` dengan `SUPABASE_URL` dan `SUPABASE_SECRET_KEY` dari environment variable di sisi server.
 2. [`lib/supabase/index.js`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/lib/supabase/index.js) — Re-export helper koneksi server.
 3. [`app/page.jsx`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/page.jsx) — Mengambil daftar produk dari tabel `produk` di Supabase secara server-side, menampilkan kartu produk dengan [`KartuProduk`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/components/KartuProduk.jsx), menampilkan pesan error jika pengambilan data gagal, menampilkan teks *"Belum ada produk"* jika tabel kosong, serta menghapus [`CatatanBelumAktif`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/components/CatatanBelumAktif.jsx) dan ketergantungan pada `data-contoh.js`.
 
 ---
 
-### Cara mengetes:
+Cara mengetes:
 1. Pastikan server dev aktif (misalnya `npm run dev`).
 2. Buka halaman beranda di browser: `http://localhost:3000`.
 3. Periksa daftar produk: semua produk dari database Supabase berhasil tampil lengkap dengan foto, kategori, nama, dan harga dalam format rupiah.
@@ -41,7 +41,7 @@ Ubah app/produk/[id]/page.jsx supaya mengambil satu produk dari tabel "produk" d
 **Hasil:**
 Pekerjaan untuk **US-02 (Detail produk)** telah selesai.
 
-### File yang diubah:
+File yang diubah:
 - [`app/produk/[id]/page.jsx`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/produk/[id]/page.jsx)
   - Mengambil data produk tunggal dari tabel `produk` di Supabase berdasarkan parameter `id` secara server-side menggunakan `buatKoneksiServer()` dari `lib/supabase/server`.
   - Memanggil `notFound()` jika produk tidak ditemukan di database atau jika format ID tidak valid.
@@ -50,7 +50,7 @@ Pekerjaan untuk **US-02 (Detail produk)** telah selesai.
 
 ---
 
-### Cara mengetes:
+Cara mengetes:
 1. Pastikan server dev aktif (misal `npm run dev`).
 2. Buka produk yang valid, contohnya `http://localhost:3000/produk/1`.
    - Foto, kategori, nama, harga dalam format rupiah, dan deskripsi produk dari database Supabase akan tampil.
@@ -71,7 +71,7 @@ Ubah components/TombolWhatsApp.jsx menjadi tautan yang membuka https://wa.me/ ke
 **Hasil:**
 Pekerjaan untuk **US-03 (Pesan via WhatsApp)** telah selesai.
 
-### File yang diubah:
+File yang diubah:
 - [`components/TombolWhatsApp.jsx`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/components/TombolWhatsApp.jsx)
   - Mengubah elemen `<button>` menjadi elemen `<a>` (tautan) dengan mempertahankan seluruh kelas tampilan tombol (`bg-utama`, teks putih, padding, rounded, dsb.).
   - Mengarahkan tautan ke format `https://wa.me/<nomor>?text=<pesan>` menggunakan nomor dari [`lib/toko.js`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/lib/toko.js).
@@ -81,7 +81,7 @@ Pekerjaan untuk **US-03 (Pesan via WhatsApp)** telah selesai.
 
 ---
 
-### Cara mengetes:
+Cara mengetes:
 1. Pastikan server dev berjalan (`http://localhost:3000`).
 2. Buka salah satu halaman detail produk, misalnya `http://localhost:3000/produk/1`.
 3. Klik tombol **"Pesan via WhatsApp"**.
@@ -93,6 +93,9 @@ Pekerjaan untuk **US-03 (Pesan via WhatsApp)** telah selesai.
 ## US-04 Login admin
 
 **Prompt:**
+Baca AGENTS.md bagian aturan keamanan dan docs/user-stories.md bagian US-04.
+
+Buat login admin memakai Supabase Auth (email dan password) dengan @supabase/ssr dan cookie, memakai SUPABASE_URL dan SUPABASE_PUBLISHABLE_KEY. Login diproses dengan Server Action di app/admin/actions.js dan disambungkan ke form di app/admin/login/page.jsx. Login berhasil diarahkan ke /admin; login gagal menampilkan pesan error yang jelas di halaman login. Buat juga tombol "Keluar" di components/NavAdmin.jsx berfungsi: mengakhiri sesi lalu kembali ke /admin/login. Jangan ubah tampilan. Hapus CatatanBelumAktif dari halaman login.
 
 **Hasil:**
 
