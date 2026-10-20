@@ -384,4 +384,10 @@ Buatkan fitur filter kategori atau pencarian di halaman admin dengan mengikuti s
 
 **Hasil:**
 
+
 **Perbaikan:**
+
+Pilih jumlah atau varian
+Baca AGENTS.md, dan docs/user-stories.md bagian US-13.
+
+Buatkan fitur PWA di halaman admin dengan mengikuti skema database di skema-database.md dan mengikuti kriteria yang ada di docs/user-stories.md bagian US-13
