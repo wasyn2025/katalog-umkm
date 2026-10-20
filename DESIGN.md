@@ -7,14 +7,14 @@ Ikuti panduan ini setiap kali membuat atau mengubah tampilan, supaya semua halam
 | Token | Nilai awal | Dipakai untuk |
 | --- | --- | --- |
 | `latar` | `#ffffff` | Latar halaman dan kartu |
-| `permukaan` | `#f1f5f2` | Latar bagian sekunder, footer, kepala tabel |
-| `garis` | `#dde5e0` | Garis tepi dan pemisah |
-| `teks` | `#1b2420` | Teks utama |
-| `teks-lembut` | `#5b6a62` | Teks pendukung: kategori, keterangan |
-| `utama` | `#1f6b4f` | Tombol utama, tautan aktif, nama toko |
-| `utama-gelap` | `#154d39` | Tombol utama saat disorot |
+| `permukaan` | `#fdf3f2` | Latar bagian sekunder, footer, kepala tabel |
+| `garis` | `#f1dcda` | Garis tepi dan pemisah |
+| `teks` | `#2a1a19` | Teks utama |
+| `teks-lembut` | `#75605e` | Teks pendukung: kategori, keterangan |
+| `utama` | `#c0453f` | Tombol utama, tautan aktif, nama toko |
+| `utama-gelap` | `#9b2f2b` | Tombol utama saat disorot |
 | `harga` / `harga-latar` | `#7a4e09` / `#fbefd8` | Label harga |
-| `bahaya` | `#b42318` | Aksi hapus dan pesan error |
+| `bahaya` | `#9f1239` | Aksi hapus dan pesan error |
 
 Pakai sebagai kelas Tailwind, misalnya `bg-utama`, `text-teks-lembut`, `border-garis`. Jangan menulis kode warna langsung di kelas.
 
