@@ -187,3 +187,11 @@ Cara mengetes:
 ## Debugging dan fitur bonus
 
 Tambahkan bagian baru untuk setiap error yang kamu perbaiki atau fitur bonus yang kamu kerjakan.
+
+## US-07 List Produk
+
+**Prompt:**
+
+**Hasil:**
+
+**Perbaikan:**
