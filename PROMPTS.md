@@ -197,6 +197,25 @@ Daftar produk masih data dummy, pakai data yang ada di supabase dengan mengikuti
 yang ada di skema-database.md
 
 **Hasil:**
+Pekerjaan untuk **US-07 (List Produk di Admin)** telah selesai.
+
+File yang diubah:
+- [`app/admin/page.jsx`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/page.jsx)
+  - Mengambil daftar produk secara server-side dari tabel `produk` di Supabase, diurutkan berdasarkan `created_at` secara menurun (`order("created_at", { ascending: false })`).
+  - Mengikuti kolom database sesuai [`docs/skema-database.md`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/docs/skema-database.md) (`id`, `nama`, `harga`, `deskripsi`, `foto_url`, `kategori`, `created_at`).
+  - Menghapus ketergantungan pada data contoh (`produkContoh` dari `lib/data-contoh.js`).
+  - Menambahkan penanganan bila terjadi error atau bila daftar produk kosong (*"Belum ada produk"*).
+  - Melewatkan data produk nyata dari database ke komponen [`TabelProduk`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/components/TabelProduk.jsx).
+
+---
+
+Cara mengetes:
+1. Masuk ke halaman admin melalui `http://localhost:3000/admin/login` dengan akun admin yang valid.
+2. Setelah dialihkan ke `http://localhost:3000/admin`, perhatikan tabel produk:
+   - Seluruh daftar produk yang tampil diambil langsung dari tabel `produk` di Supabase (bukan 6 produk contoh lama).
+   - Menampilkan foto, nama, kategori, serta harga dalam format rupiah secara tepat.
+3. Tombol aksi "Ubah" dan "Hapus" pada tabel tetap tersedia untuk setiap produk.
+
 
 **Perbaikan:**
 
@@ -206,6 +225,48 @@ yang ada di skema-database.md
 Baca AGENTS.md, dan docs/user-stories.md bagian US-08.
 
 Buatkan fitur tambah produk di halaman admin dengan mengikuti skema database di skema-database.md dan mengikuti kriteria yang ada di docs/user-stories.md bagian US-08
+
+**Hasil:**
+Fitur **US-08 (Tambah Produk)** telah selesai dibuat sesuai dengan panduan di [AGENTS.md](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/AGENTS.md), [docs/skema-database.md](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/docs/skema-database.md), dan [docs/user-stories.md](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/docs/user-stories.md).
+
+Perubahan File
+
+1. [`app/admin/actions.js`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/actions.js):
+   - Menambahkan Server Action `tambahProduk`:
+     - Memeriksa sesi login admin via server (`periksaLoginAdmin`) sebelum mengeksekusi operasi data.
+     - Memvalidasi input wajib (`nama`, `harga >= 0`).
+     - Menyimpan data baru ke tabel `produk` di Supabase menggunakan koneksi admin (`buatKoneksiAdmin`).
+     - Melakukan revalidasi cache (`revalidatePath`) dan mengalihkan halaman ke `/admin` (`redirect("/admin")`).
+2. [`app/admin/produk/baru/page.jsx`](file:///c:/Users/liminal/Documents/chat-project/katalog-umkm/app/admin/produk/baru/page.jsx):
+   - Menghubungkan form ke server action `tambahProduk`.
+   - Menghapus komponen `CatatanBelumAktif`.
+
+---
+
+Cara Mengetes
+
+1. **Jalankan server pengembangan** (jika belum berjalan):
+   ```bash
+   npm run dev
+   ```
+2. **Uji proteksi login**:
+   - Buka browser (mode incognito atau tanpa login) dan akses langsung `http://localhost:3000/admin/produk/baru`.
+   - Pastikan halaman otomatis dialihkan ke `/admin/login`.
+3. **Uji tambah produk via admin**:
+   - Masuk sebagai admin di `/admin/login`.
+   - Buka `/admin` lalu klik tombol **Tambah produk** (mengarah ke `/admin/produk/baru`).
+   - Isi form (contoh: Nama: `Kopi Susu Gula Aren`, Harga: `18000`, Kategori: `Minuman`, Link foto: `/produk/kopi.svg`, Deskripsi: `Kopi susu segar dengan gula aren murni`).
+   - Tekan tombol **Simpan produk**.
+   - Pastikan browser kembali dialihkan ke `/admin` dan produk yang baru ditambahkan langsung muncul pada tabel daftar produk serta di katalog pengunjung (`/`).
+
+**Perbaikan:**
+
+## US-09 Ubah produk
+
+**Prompt:**
+Baca AGENTS.md, dan docs/user-stories.md bagian US-09.
+
+Buatkan fitur ubah produk di halaman admin dengan mengikuti skema database di skema-database.md dan mengikuti kriteria yang ada di docs/user-stories.md bagian US-09
 
 **Hasil:**
 
