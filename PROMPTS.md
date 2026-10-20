@@ -191,6 +191,21 @@ Tambahkan bagian baru untuk setiap error yang kamu perbaiki atau fitur bonus yan
 ## US-07 List Produk
 
 **Prompt:**
+Baca AGENTS.md, dan docs/user-stories.md bagian US-07.
+
+Daftar produk masih data dummy, pakai data yang ada di supabase dengan mengikuti kolom database
+yang ada di skema-database.md
+
+**Hasil:**
+
+**Perbaikan:**
+
+## US-08 Tambah produk
+
+**Prompt:**
+Baca AGENTS.md, dan docs/user-stories.md bagian US-08.
+
+Buatkan fitur tambah produk di halaman admin dengan mengikuti skema database di skema-database.md dan mengikuti kriteria yang ada di docs/user-stories.md bagian US-08
 
 **Hasil:**
 
