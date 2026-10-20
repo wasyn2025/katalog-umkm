@@ -11,7 +11,7 @@ export default function NavAdmin() {
         Ganti password
       </Link>
       <form action={keluarAdmin} className="ml-auto">
-        <button type="submit" className="text-teks-lembut hover:text-bahaya">
+        <button type="submit" className="cursor-pointer text-teks-lembut hover:text-bahaya">
           Keluar
         </button>
       </form>

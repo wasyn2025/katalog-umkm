@@ -23,7 +23,7 @@ export default function HalamanLogin() {
 
       <form action={formAction} className="flex flex-col gap-4">
         <Input label="Email" name="email" type="email" autoComplete="email" required />
-        <div>
+        <div className="mb-[2rem]">
           <Input
             label="Password"
             name="password"

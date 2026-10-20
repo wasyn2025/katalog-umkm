@@ -7,7 +7,7 @@ const gaya = {
 };
 
 export default function Tombol({ href, varian = "utama", className = "", children, ...props }) {
-  const kelas = `inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors ${gaya[varian]} ${className}`;
+  const kelas = `cursor-pointer inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors ${gaya[varian]} ${className}`;
 
   if (href) {
     return (
